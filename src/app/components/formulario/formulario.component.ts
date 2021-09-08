@@ -14,6 +14,11 @@ const ELEMENT_DATA = {
     "nombre": "morales",
     "apellido": "vanegas",
     "edad": "15",
+  },
+  {
+    "nombre": "nice",
+    "apellido": "to me",
+    "edad": "15",
   }]
 }
 @Component({
@@ -25,17 +30,39 @@ export class FormularioComponent implements OnInit {
 
   dataForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
-    this.inializarFormulario();
-    this.dataForm.setValue({
-       email: ELEMENT_DATA.email,
-       password: ELEMENT_DATA.password,
-      //  hijos: this.fb.array([
-      //   "nombre": ELEMENT_DATA.nombre,
-      //   "apellido": ELEMENT_DATA.apellido,
-      //   "edad": ELEMENT_DATA.edad
-      //  ])
+  constructor(private fb: FormBuilder) {}
+
+  ngOnInit(){
+    this.inicializar();
+    this.editarForm();
+  }
+  
+  inicializar(){
+    this.dataForm = this.fb.group({
+      email: ['', Validators.required],
+      password: ['', Validators.required],
+      hijos: this.fb.array([this.createHijos()])
     })
+  }
+
+  editarForm(){
+    this.dataForm.patchValue({
+      email: ELEMENT_DATA.email,
+      password: ELEMENT_DATA.password
+    });
+    this.dataForm.setControl('hijos', this.setExistingHijos(ELEMENT_DATA.hijos));
+  }
+
+  setExistingHijos(hijosData: any): FormArray{
+    const formArray = new FormArray([]);
+    hijosData.forEach(s => {
+      formArray.push(this.fb.group({
+        nombre: s.nombre,
+        apellido: s.apellido,
+        edad: s.edad,
+      }));
+    });
+  return formArray;
   }
 
   createHijos(): FormGroup{
@@ -43,14 +70,6 @@ export class FormularioComponent implements OnInit {
       nombre: [ELEMENT_DATA.hijos['nombre'], Validators.required],
       apellido: [ELEMENT_DATA.hijos['apellido'], Validators.required],
       edad: [ELEMENT_DATA.hijos['edad'], Validators.required]
-    })
-  }
-
-  inializarFormulario(){
-    this.dataForm = this.fb.group({
-      email: [ELEMENT_DATA.email, Validators.required],
-      password: [ELEMENT_DATA.password, Validators.required],
-      // hijos: this.fb.array([this.createHijos()])
     })
   }
 
@@ -68,13 +87,6 @@ export class FormularioComponent implements OnInit {
 
   guardar(){
     console.log(this.dataForm.value);
-  }
-  
-  ngOnInit(): void {
-    // console.log(ELEMENT_DATA);
-    // console.log(this.dataForm.value);
-    // this.dataForm.setValue(["AA", "BB", "CC"]);
-    // console.log(this.dataForm.value);
-  }
+  }  
 
 }

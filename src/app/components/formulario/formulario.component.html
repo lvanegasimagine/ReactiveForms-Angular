@@ -10,7 +10,7 @@
           <label for="exampleInputPassword1">Password</label>
           <input type="text" class="form-control" formControlName="password" id="exampleInputPassword1">
         </div>
-        <!-- <div class="form-group row">
+        <div class="form-group row">
             <div class="col">
                 <div formArrayName="hijos" *ngFor="let item of hijos.controls; let i = index">
                     <div class="row form-group" [formGroupName]="i">
@@ -30,7 +30,7 @@
                 </div>
                 <button type="none" class="btn btn-success mt-3 mb-5 btn-block" style="float: right;" (click)="agregarHijos()"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Agregar hijos</button>
             </div>
-        </div> -->
+        </div>
         <button type="submit" class="btn btn-primary" (click)="guardar()" [disabled]="!dataForm.valid">Submit</button>
     </form>
     <a [routerLink]="['/formulario', 1]">ir a Formulario</a>
